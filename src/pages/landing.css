@@ -1,0 +1,79 @@
+/* General Container Styling */
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f8e6f4;
+  }
+  
+  /* Header Styling */
+  .landing-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .landing-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .landing-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  /* Card Styling for Image */
+  .landing-card {
+    max-width: 350px;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  .landing-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+  
+  /* Login Button Container */
+  .login-container {
+    margin-top: 1.5rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .landing-title {
+      font-size: 2rem;
+    }
+  
+    .landing-subtitle {
+      font-size: 1rem;
+    }
+  
+    .landing-card {
+      max-width: 300px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .landing-title {
+      font-size: 1.8rem;
+    }
+  
+    .landing-subtitle {
+      font-size: 0.9rem;
+    }
+  
+    .landing-card {
+      max-width: 250px;
+    }
+  }
