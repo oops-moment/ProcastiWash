@@ -1,12 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-import {Landing} from './pages/landing';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Landing } from "./pages/landing.jsx";
+import { MachineDashboard } from "./pages/washing_machine.jsx";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
-    <div className="App">
-      <Landing />
-    </div>
+    <Router>
+      <Routes>
+        {/* Landing Page */}
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <Navigate to="/dashboard" /> : <Landing onLoginSuccess={handleLoginSuccess} />
+          }
+        />
+
+        {/* Machine Dashboard Page */}
+        <Route
+          path="/dashboard"
+          element={
+            isLoggedIn ? <MachineDashboard /> : <Navigate to="/" />
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

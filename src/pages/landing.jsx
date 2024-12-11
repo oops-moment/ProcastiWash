@@ -4,7 +4,19 @@ import { Box, Typography, Card, CardMedia } from "@mui/material";
 import "./landing.css"; // Import the custom CSS file
 import washingMachine from "../images/landing_page.avif";
 
-export function Landing() {
+export function Landing({ onLoginSuccess }) {
+  const handleLoginSuccess = (credentialResponse) => {
+    console.log("Login Success:", credentialResponse);
+
+    // Trigger the login callback
+    onLoginSuccess();
+  };
+
+  const handleLoginError = () => {
+    console.log("Login Failed");
+    alert("Unable to login. Please try again.");
+  };
+
   return (
     <Box className="landing-container">
       <header className="landing-header">
@@ -25,12 +37,8 @@ export function Landing() {
       </Card>
       <div className="login-container">
         <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
+          onSuccess={handleLoginSuccess}
+          onError={handleLoginError}
           auto_select={true}
         />
       </div>
