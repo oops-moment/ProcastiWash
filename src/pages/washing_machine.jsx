@@ -1,16 +1,24 @@
-import React, { useState } from "react";
-import "./washing_machine.css"; // Import the CSS file
-
-const initialMachines = [
-  { id: 1, name: "Machine Floor 1", status: "unoccupied", details: null },
-  { id: 2, name: "Machine Floor 2", status: "unoccupied", details: null },
-  { id: 3, name: "Machine Floor 3", status: "unoccupied", details: null },
-  { id: 4, name: "Machine Floor 4", status: "unoccupied", details: null },
-];
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./washing_machine.css";
 
 export function MachineDashboard() {
-  const [machines, setMachines] = useState(initialMachines);
+  const [machines, setMachines] = useState([]);
   const [formData, setFormData] = useState({});
+
+  // Fetch machines from the backend
+  useEffect(() => {
+    const fetchMachines = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/machines");
+        setMachines(response.data);
+      } catch (error) {
+        console.error("Error fetching machines:", error);
+      }
+    };
+
+    fetchMachines();
+  }, []);
 
   const handleInputChange = (id, field, value) => {
     setFormData((prev) => ({
@@ -22,38 +30,41 @@ export function MachineDashboard() {
     }));
   };
 
-  const handleOccupy = (id) => {
+  const handleOccupy = async (id) => {
     const data = formData[id] || {};
     if (!data.name || !data.contact || !data.time) {
       alert("Please fill in all details before occupying the machine.");
       return;
     }
 
-    const updatedMachines = machines.map((machine) =>
-      machine.id === id
-        ? {
-            ...machine,
-            status: "occupied",
-            details: data,
-          }
-        : machine
-    );
-    setMachines(updatedMachines);
-
-    // Clear the form data for this machine
-    setFormData((prev) => ({ ...prev, [id]: { name: "", contact: "", time: "" } }));
+    try {
+      await axios.post(`http://localhost:5001/machines/${id}/occupy`, data);
+      setMachines((prev) =>
+        prev.map((machine) =>
+          machine.id === id
+            ? { ...machine, status: "occupied", details: data }
+            : machine
+        )
+      );
+      setFormData((prev) => ({ ...prev, [id]: { name: "", contact: "", time: "" } }));
+    } catch (error) {
+      console.error("Error updating machine status:", error);
+    }
   };
 
-  const handleFree = (id) => {
-    const updatedMachines = machines.map((machine) =>
-      machine.id === id
-        ? { ...machine, status: "unoccupied", details: null }
-        : machine
-    );
-    setMachines(updatedMachines);
-
-    // Clear the form data for this machine
-    setFormData((prev) => ({ ...prev, [id]: { name: "", contact: "", time: "" } }));
+  const handleFree = async (id) => {
+    try {
+      await axios.post(`http://localhost:5001/machines/${id}/free`);
+      setMachines((prev) =>
+        prev.map((machine) =>
+          machine.id === id
+            ? { ...machine, status: "unoccupied", details: null }
+            : machine
+        )
+      );
+    } catch (error) {
+      console.error("Error updating machine status:", error);
+    }
   };
 
   return (
@@ -118,5 +129,8 @@ export function MachineDashboard() {
     </div>
   );
 }
+
+
+
 // QyKxGuEyl4l5fhXN
 // 1u3OYcgMg9OYtZpJ

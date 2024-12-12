@@ -7,16 +7,14 @@ import washingMachine from "../images/landing_page.avif";
 
 export function Landing({ onLoginSuccess }) {
   const handleLoginSuccess = async (credentialResponse) => {
+    console.log("credentialResponse:", credentialResponse); // Debugging
     try {
-      // Send the credentialResponse to the backend
       const response = await axios.post("http://localhost:5001/login", {
         credentialResponse,
       });
-
       const { token } = response.data;
-      localStorage.setItem("authToken", token); // Store the token locally
-
-      onLoginSuccess(); // Notify parent component about successful login
+      localStorage.setItem("authToken", token);
+      onLoginSuccess();
     } catch (error) {
       console.error("Error during login:", error);
       alert("Unable to log in. Please try again.");

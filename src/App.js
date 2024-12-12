@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Landing } from "./pages/landing.jsx";
 import { MachineDashboard } from "./pages/washing_machine.jsx";
-import jwtDecode from "jwt-decode"; // Install this library with npm install jwt-decode
+import {jwtDecode} from "jwt-decode"; // Install this library with npm install jwt-decode
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
