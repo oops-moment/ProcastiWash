@@ -1,20 +1,31 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { Box, Typography, Card, CardMedia } from "@mui/material";
-import "./landing.css"; // Import the custom CSS file
+import axios from "axios"; // Axios for API requests
+import "./landing.css";
 import washingMachine from "../images/landing_page.avif";
 
 export function Landing({ onLoginSuccess }) {
-  const handleLoginSuccess = (credentialResponse) => {
-    console.log("Login Success:", credentialResponse);
+  const handleLoginSuccess = async (credentialResponse) => {
+    try {
+      // Send the credentialResponse to the backend
+      const response = await axios.post("http://localhost:5001/login", {
+        credentialResponse,
+      });
 
-    // Trigger the login callback
-    onLoginSuccess();
+      const { token } = response.data;
+      localStorage.setItem("authToken", token); // Store the token locally
+
+      onLoginSuccess(); // Notify parent component about successful login
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Unable to log in. Please try again.");
+    }
   };
 
   const handleLoginError = () => {
     console.log("Login Failed");
-    alert("Unable to login. Please try again.");
+    alert("Unable to log in. Please try again.");
   };
 
   return (
